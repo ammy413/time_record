@@ -6,9 +6,12 @@
 
 
 import tkinter
+import pymysql
 from tkinter.constants import GROOVE, DISABLED
 from distutils.cmd import Command
+from _tkinter import create
 
+# gui部分
 root = tkinter.Tk()
 
 def outputletter():
@@ -31,5 +34,43 @@ tr_label.pack()
 
 start.pack()
 
-root.mainloop()
+# root.mainloop()
+
+
+# 数据库部分
+
+host = '127.0.0.1'
+user = 'root'
+password = 'root'
+db_list = []
+tb_list =[]
+
+dbcon = pymysql.connect(host,user,password)
+cur = dbcon.cursor()
+
+def check_db():
+    cur.execute("show databases")
+    for db in cur.fetchall():
+        db_list.append(db[0])
+    return db_list
+
+def check_tb(db):
+    cur.execute("use %s" %db)
+    cur.execute("select database()")
+    print ("当前数据库： %s" %cur.fetchall()[0])
+    all_table = cur.execute("show tables")
+    for tb in cur.fetchall():
+        tb_list.append(tb[0])
+    return tb_list
+def creat_db():
+
+
+
+a = check_db()
+print (a)
+b = create_db(db_list)
+print b
+c = check_tb(b)
+print (c)
+
 
